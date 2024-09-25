@@ -1,3 +1,6 @@
+import conection_db from "../database/db.js";
+
+
 export const getMemes = (req, res) => {
   res.send("Get all memes");
 };

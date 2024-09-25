@@ -1,14 +1,12 @@
-import dotenv from 'dotenv'
-import { Sequelize } from 'sequelize';
+import { Sequelize } from "sequelize";
+import { DB_KEY, DB_NAME, DB_USER } from "../config.js";
 
-dotenv.config();
+const conection_db = new Sequelize(DB_NAME, DB_USER, DB_KEY, {
+  host: "localhost",
+  dialect: "mysql",
+  define: {
+    timestamps: false,
+  },
+});
 
-const conection_db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.KEY_DB, {
-    host: 'localhost',
-    dialect:'mysql' ,
-    define:{
-        timestamps:false
-    }
-  });
-
-export default conection_db
+export default conection_db;
