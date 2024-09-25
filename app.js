@@ -8,8 +8,10 @@ import { PORT } from "./config.js";
 const app = express();
 app.use(router);
 
-app.listen(PORT)
-console.log('Probando la conexión. CONECTADO')
+app.listen(PORT, ()=>{
+  console.log('Probando la conexión. CONECTADO')
+})
+
 
 try {
     await conection_db.authenticate();

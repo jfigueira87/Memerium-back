@@ -14,6 +14,11 @@ export const updateMeme = (req, res) => {
   res.send("Update meme");
 };
 
-export const deleteMeme = (req, res) => {
-  res.send("Delete meme");
+export const deleteMeme = async (req, res) => {
+  const [result] = await pool.query("DELETE FROM memes WHERE id = ? ", [req.params.id]);
+
+  if (result.affectedRows ===0)
+    return res.status(404).json({message: "meme not found"});
+  return res.sendStatus(204)
+  res.json(result)
 };
