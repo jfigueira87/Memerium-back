@@ -1,9 +1,13 @@
 import memeModel from "../models/memeModel.js";
 
 
-
-export const getMemes = (req, res) => {
-  res.send("Get all memes");
+export const getMemes =async (req,res) => {
+  try{
+    const result= await memeModel.findAll()
+    res.json(result)
+  }catch (error){
+    res.json({message:'No se han podido obtener los memes'})
+  }  
 };
 
 export const getMeme = (req, res) => {
@@ -25,15 +29,12 @@ export const deleteMeme = async (req, res) => {
         id: req.params.id,
       }
     });
-
     if (result===0){
       return res.status(404).json({message: 'No se encuentra el meme'});
     }
-
     return res.sendStatus(204);
   }catch (error) {
     console.error('Error al eliminar el meme:',error);
     return res.status(500).json({message: 'error interno del servidor'});
-  }
-  
+  }  
 };

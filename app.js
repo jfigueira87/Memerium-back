@@ -3,10 +3,13 @@ import memeModel from "./models/memeModel.js";
 import express from "express"
 import router from "./routes/routes.js";
 import { PORT } from "./config.js";
+import cors from 'cors';
 
 
 const app = express();
 app.use(router);
+app.use(cors());
+app.use(express.json());
 
 app.listen(PORT, ()=>{
   console.log('Probando la conexión. CONECTADO')
