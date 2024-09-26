@@ -1,3 +1,7 @@
+import memeModel from "../models/memeModel.js";
+
+
+
 export const getMemes = (req, res) => {
   res.send("Get all memes");
 };
@@ -15,10 +19,21 @@ export const updateMeme = (req, res) => {
 };
 
 export const deleteMeme = async (req, res) => {
-  const [result] = await pool.query("DELETE FROM memes WHERE id = ? ", [req.params.id]);
+  try{
+    const result = await memeModel.destroy({
+      where:{
+        id: req.params.id,
+      }
+    });
 
-  if (result.affectedRows ===0)
-    return res.status(404).json({message: "meme not found"});
-  return res.sendStatus(204)
-  res.json(result)
+    if (result===0){
+      return res.status(404).json({message: 'No se encuentra el meme'});
+    }
+
+    return res.sendStatus(204);
+  }catch (error) {
+    console.error('Error al eliminar el meme:',error);
+    return res.status(500).json({message: 'error interno del servidor'});
+  }
+  
 };

@@ -17,7 +17,7 @@ try {
     await conection_db.authenticate();
     console.log('La conexión ha sido exitosa');
 
-    await memeModel.sync({ force: true });
+    await memeModel.sync({ force: false });
     console.log('Se ha creado correctamente');
 
   } catch (error) {
