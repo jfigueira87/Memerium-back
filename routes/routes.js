@@ -4,7 +4,7 @@ import { getMeme, getMemes, createMeme, updateMeme, deleteMeme } from "../contro
 const router = Router();
 
 //GET all memes
-router.get("/meme", getMemes);
+router.get("/", getMemes);
 
 //GET one meme by ID
 router.get("/meme/:id", getMeme);
