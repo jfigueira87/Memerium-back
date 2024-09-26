@@ -78,7 +78,7 @@ export const createMeme = [
 
 //UPDATE meme
 export const updateMeme = [
-  // Validación del ID y los campos
+ 
   param('id').isInt().withMessage('El ID debe ser un número entero'),
   body('title').optional().isString().withMessage('El título debe ser un texto'),
   body('category').optional().isString().withMessage('La categoría debe ser un texto'),
@@ -92,17 +92,15 @@ export const updateMeme = [
     }
 
     try {
-      const { id } = req.params; // ID debe venir desde el parámetro de la URL
-      const { title, category, tags, url } = req.body; // Obtiene el resto de campos del cuerpo
+      const { id } = req.params; 
+      const { title, category, tags, url } = req.body;
 
-      // Buscar el meme por ID
       const meme = await memeModel.findOne({ where: { id } });
 
       if (!meme) {
         return res.status(404).json({ message: 'Meme no encontrado' });
       }
-
-      // Actualizar el meme con los valores proporcionados, manteniendo los existentes si no se proporcionan
+      
       await meme.update({
         title: title ?? meme.title,
         category: category ?? meme.category,
