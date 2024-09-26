@@ -9,7 +9,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(memeRoutes);
+app.use('/meme', memeRoutes);
 
 console.log("Probando la conexión. CONECTADO");
 
