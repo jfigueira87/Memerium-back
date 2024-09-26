@@ -1,9 +1,20 @@
-export const getMemes = (req, res) => {
+import memeModel from "../models/memeModel.js";
+
+export const getMemes = async (req, res) => {
   res.send("Get all memes");
 };
 
-export const getMeme = (req, res) => {
-  res.send("Get one meme");
+export const getMeme = async (req, res) => {
+  try{
+    const memes = await memeModel.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(memes);
+    }catch (error){
+        res.json({message: error.message});
+    }
 };
 
 export const createMeme = (req, res) => {
