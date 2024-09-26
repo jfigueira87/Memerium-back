@@ -24,5 +24,5 @@ try {
 }
 
 app.listen(PORT, () => {
-  console.log("Working server up 👍 http://localhost:3000");
+  console.log("Working server up 👍 http://localhost:3000/meme");
 });
