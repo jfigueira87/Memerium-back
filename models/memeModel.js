@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import conection_db from "../database/db.js";
 
 const memeModel = conection_db.define(
-    'memes',
+    'Meme',
     {
         title:{
             type: DataTypes.STRING,

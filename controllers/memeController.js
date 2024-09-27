@@ -11,17 +11,14 @@ export const getMeme = (req, res) => {
 
 export const createMeme = async (req, res) => {
   try {
-    // Mostrar los datos recibidos
-    console.log('Datos recibidos:', req.body);
-
-    const { title, category, tags, url } = req.body;
-
-    const newMeme = await Meme.create({
-      title,
-      category,
-      tags,
-      url,
-    });
+    
+      const { title, category, tags, url } = req.body;
+      const newMeme = await Meme.create({
+        title,
+        category,
+        tags,
+        url,
+      });
 
     res.status(201).json(newMeme);
   } catch (error) {
