@@ -5,16 +5,21 @@ export const getMemes = async (req, res) => {
 };
 
 export const getMeme = async (req, res) => {
-  try{
+  try {
     const memes = await memeModel.findOne({
       where: {
         id: req.params.id,
       },
     });
-    res.json(memes);
-    }catch (error){
-        res.json({message: error.message});
+
+    if (!memes) {
+      return res.status(404).json({ message: "Meme not found" }); // Código 404: No encontrado
     }
+
+    return res.json(memes); // Esto ya envía el estado 200 por defecto
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 export const createMeme = (req, res) => {
