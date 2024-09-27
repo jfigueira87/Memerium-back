@@ -24,7 +24,7 @@ export const validateCreate = [
 ];
 
 export const validateGetOne = [
-    check("id")
+    check("id", "El valor debe ser numerico")
     .exists()
     .isNumeric()
     .notEmpty(),
