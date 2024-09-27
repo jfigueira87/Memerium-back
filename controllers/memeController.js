@@ -45,10 +45,10 @@ export const createMeme = async (req, res) => {
     });
     res.json(newMeme);
   } catch (error) {
-    console.error("Error creating meme:", error);
+    console.error("Error creando meme:", error);
     res
       .status(500)
-      .json({ error: "Error creating meme", details: error.message });
+      .json({ error: "Error creando meme", details: error.message });
   }
 };
 
@@ -65,13 +65,13 @@ export const updateMeme = async (req, res) => {
       const updatedMeme = await memeModel.findOne({ where: { id } });
       res.status(200).json(updatedMeme);
     } else {
-      res.status(404).json({ message: "Meme not found" });
+      res.status(404).json({ message: "Meme no encontrado." });
     }
   } catch (error) {
-    console.error("Error updating meme:", error);
+    console.error("Error actualizando meme:", error);
     res
       .status(500)
-      .json({ error: "Error updating meme", details: error.message });
+      .json({ error: "Error actualizando meme", details: error.message });
   }
 };
 
@@ -81,14 +81,14 @@ export const deleteMeme = async (req, res) => {
     const deleted = await memeModel.destroy({ where: { id } });
 
     if (deleted) {
-      res.status(200).json({ message: "Meme successfully deleted." });
+      res.status(200).json({ message: "Meme borrado con exito." });
     } else {
-      res.status(404).json({ message: "Meme not found." });
+      res.status(404).json({ message: "Meme not encontrado." });
     }
   } catch (error) {
-    console.error("Error deleting meme:", error);
+    console.error("Error borrando meme:", error);
     res
       .status(500)
-      .json({ error: "Error deleting meme", details: error.message });
+      .json({ error: "Error borrando meme", details: error.message });
   }
 };

@@ -5,6 +5,7 @@ import memeRoutes from "./routes/routes.js";
 import { PORT } from "./config.js";
 import cors from "cors";
 
+
 const app = express();
 
 app.use(cors());
@@ -24,5 +25,5 @@ try {
 }
 
 app.listen(PORT, () => {
-  console.log("Working server up 👍 http://localhost:3000/meme");
+  console.log("Working server up 👍 http://localhost:4000/meme");
 });
