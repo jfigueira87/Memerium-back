@@ -1,5 +1,5 @@
 import Meme from '../models/memeModel.js'; // Importa el modelo correctamente
-
+import { validationResult } from 'express-validator';
 
 export const getMemes = (req, res) => {
   res.send("Get all memes");
@@ -10,15 +10,21 @@ export const getMeme = (req, res) => {
 };
 
 export const createMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
-    
-      const { title, category, tags, url } = req.body;
-      const newMeme = await Meme.create({
-        title,
-        category,
-        tags,
-        url,
-      });
+    const { title, category, tags, url } = req.body;
+
+    const newMeme = await Meme.create({
+      title,
+      category,
+      tags,
+      url,
+    });
 
     res.status(201).json(newMeme);
   } catch (error) {

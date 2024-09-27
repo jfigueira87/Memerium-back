@@ -27,5 +27,5 @@ try {
 
 // Escuchar peticiones en el puerto
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log("Working server up 👍 http://localhost:8000/meme");
 });
