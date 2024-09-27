@@ -13,12 +13,12 @@ export const getMeme = async (req, res) => {
     });
 
     if (!memes) {
-      return res.status(404).json({ message: "Meme not found" }); // Código 404: No encontrado
+      return res.status(404).json("Meme not found");
     }
 
     return res.json(memes); // Esto ya envía el estado 200 por defecto
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json(error.message);
   }
 };
 
