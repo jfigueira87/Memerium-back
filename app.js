@@ -3,13 +3,16 @@ import memeModel from "./models/memeModel.js";
 import express from "express"
 import router from "./routes/routes.js";
 import { PORT } from "./config.js";
+import cors from "cors";
 
 
 const app = express();
 app.use(router);
+app.use(cors());
+app.listen(PORT, () =>
+  console.log("Working server up 👍 http://localhost:8000/memes")
+)
 
-app.listen(PORT)
-console.log('Probando la conexión. CONECTADO')
 
 try {
     await conection_db.authenticate();
