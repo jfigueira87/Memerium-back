@@ -1,15 +1,56 @@
-import memeModel from "../models/memeModel.js";
+import memeModel from '../models/memeModel.js'; // Importa el modelo correctamente
+import { validationResult } from 'express-validator';
 
-export const getMemes = (req, res) => {
-  res.send("Get all memes");
+export const getMemes = async (req, res)=>{
+  try{
+  const memes = await memeModel.findAll ();
+  res.json(memes);
+  }
+  catch (error){
+      res.send({message: error.message})
+  }
+}
+
+export const getMeme = async (req, res) => {
+  try {
+    const memes = await memeModel.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!memes) {
+      return res.status(404).json("Meme not found");
+    }
+
+    return res.json(memes); // Esto ya envía el estado 200 por defecto
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
 };
 
-export const getMeme = (req, res) => {
-  res.send("Get one meme");
-};
+export const createMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-export const createMeme = (req, res) => {
-  res.send("Create meme");
+  try {
+    const { title, category, tags, url } = req.body;
+
+    const newMeme = await Meme.create({
+      title,
+      category,
+      tags,
+      url,
+    });
+
+    res.status(201).json(newMeme);
+  } catch (error) {
+    console.error('Error al crear el meme:', error);
+    res.status(500).json({ message: 'Hubo un error al crear el meme', error: error.message });
+  }
 };
 
 export const updateMeme = (req, res) => {
