@@ -20,13 +20,8 @@ router.get("/meme", getMemes);
 // GET one meme by ID
 router.get("/meme/:id", validateIdParam, handleValidationErrors, getMeme);
 
-<<<<<<< HEAD
-//CREATE meme
-router.post('/meme', memeValidationRules, createMeme);
-=======
 // CREATE meme
 router.post("/meme", validateCreateOrUpdate, handleValidationErrors, createMeme);
->>>>>>> ecfed8595a3b4d83af1cd7b912ca8ce1fafdf71f
 
 // PUT meme by ID
 router.put("/meme/:id", [...validateCreateOrUpdate, ...validateIdParam], handleValidationErrors, updateMeme);
