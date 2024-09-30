@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getMeme, getMemes, createMeme, updateMeme, deleteMeme } from '../controllers/memeController.js';
-import { memeValidationRules } from '../validators/memeValidator.js';
+import { getMeme, getMemes, createMeme, updateMeme, deleteMeme } from "../controllers/memeController.js";
+import { validateMemeId, handleValidation } from '../validators/memeValidators.js'; // Importas las validaciones
 
 const router = Router();
 
@@ -8,7 +8,7 @@ const router = Router();
 router.get("/meme", getMemes);
 
 //GET one meme by ID
-router.get("/meme/:id", getMeme);
+router.get("/meme/:id", validateMemeId, handleValidation,  getMeme);
 
 //CREATE meme
 router.post('/meme', memeValidationRules, createMeme);

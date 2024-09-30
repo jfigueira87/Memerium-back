@@ -2,13 +2,19 @@ import conection_db from "./database/db.js";
 import memeModel from "./models/memeModel.js";
 import express from "express";
 import router from "./routes/routes.js";
+import cors from 'cors';
 import { PORT } from "./config.js";
 
 const app = express();
+app.use(router);
+app.use(cors());
 
 // Middleware para interpretar JSON
 app.use(express.json());
 
+app.listen(PORT, () => {
+  console.log("Working server up 👍 http://localhost:8000/meme");
+});
 // Usar las rutas de memes
 app.use('/api', router);
 
@@ -19,9 +25,7 @@ async function startServer() {
     await conection_db.authenticate();
     console.log('La conexión ha sido exitosa');
 
-    // Sincronizar modelo con base de datos
-    await memeModel.sync({ force: false }); // Usar `force: false` para evitar borrar datos
-
+    await memeModel.sync({ force: false });
     console.log('Se ha creado correctamente');
 
     // Escuchar peticiones en el puerto
