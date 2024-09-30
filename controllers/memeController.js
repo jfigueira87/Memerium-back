@@ -5,35 +5,27 @@ export const getMemes = (req, res) => {
   res.send("Get all memes");
 };
 
-export const getMeme = (req, res) => {
-  res.send("Get one meme");
-};
-
-export const createMeme = async (req, res) => {
-  // Manejar errores de validación
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
+export const getMeme = async (req, res) => {
   try {
-    const { title, category, tags, url } = req.body;
-
-    const newMeme = await Meme.create({
-      title,
-      category,
-      tags,
-      url,
+    const memes = await memeModel.findOne({
+      where: {
+        id: req.params.id,
+      },
     });
 
-    res.status(201).json(newMeme);
+    if (!memes) {
+      return res.status(404).json("Meme not found");
+    }
+
+    return res.json(memes); // Esto ya envía el estado 200 por defecto
   } catch (error) {
-    console.error('Error al crear el meme:', error);
-    res.status(500).json({ message: 'Hubo un error al crear el meme', error: error.message });
+    return res.status(500).json(error.message);
   }
 };
 
-
+export const createMeme = (req, res) => {
+  res.send("Create meme");
+};
 
 export const updateMeme = (req, res) => {
   res.send("Update meme");
