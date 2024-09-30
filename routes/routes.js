@@ -1,22 +1,37 @@
 import { Router } from "express";
 import { getMeme, getMemes, createMeme, updateMeme, deleteMeme } from "../controllers/memeController.js";
-import { validateMemeId, handleValidation } from '../validators/memeValidators.js'; // Importas las validaciones
+import { validateCreateOrUpdate, validateIdParam } from '../validators/validators.js';
+import { validationResult } from 'express-validator';
 
 const router = Router();
 
-//GET all memes
+// Middleware para manejar los errores de validación
+const handleValidationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+};
+
+// GET all memes
 router.get("/meme", getMemes);
 
-//GET one meme by ID
-router.get("/meme/:id", validateMemeId, handleValidation,  getMeme);
+// GET one meme by ID
+router.get("/meme/:id", validateIdParam, handleValidationErrors, getMeme);
 
+<<<<<<< HEAD
 //CREATE meme
 router.post('/meme', memeValidationRules, createMeme);
+=======
+// CREATE meme
+router.post("/meme", validateCreateOrUpdate, handleValidationErrors, createMeme);
+>>>>>>> ecfed8595a3b4d83af1cd7b912ca8ce1fafdf71f
 
-//PUT meme by ID
-router.put("/meme/:id", updateMeme);
+// PUT meme by ID
+router.put("/meme/:id", [...validateCreateOrUpdate, ...validateIdParam], handleValidationErrors, updateMeme);
 
-//DELETE meme
-router.delete("/meme/:id", deleteMeme);
+// DELETE meme by ID
+router.delete("/meme/:id", validateIdParam, handleValidationErrors, deleteMeme);
 
 export default router;
