@@ -3,21 +3,31 @@ import memeModel from "./models/memeModel.js";
 import express from "express"
 import router from "./routes/routes.js";
 import { PORT } from "./config.js";
+import cors from 'cors';
 
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 app.use(router);
 
-app.listen(PORT)
-console.log('Probando la conexión. CONECTADO')
 
-try {
+const startServer = async () => {
+  try {
+    
     await conection_db.authenticate();
-    console.log('La conexión ha sido exitosa');
-
-    await memeModel.sync({ force: true });
-    console.log('Se ha creado correctamente');
+    console.log('✅Te has conectado a la BD✅');
+    
+    await memeModel.sync({ force: false });
+    console.log('El modelo está 👍🏻 ');
+    
+    app.listen(PORT, () => {
+      console.log(`El servidor se ha levantado en el puerto 🖥️ ${PORT}`);
+    });
 
   } catch (error) {
-    console.error('La conexión ha fallado', error);
+    console.error('❌ La conexión a la base de datos ha fallado:', error);
   }
+};
+
+startServer();
