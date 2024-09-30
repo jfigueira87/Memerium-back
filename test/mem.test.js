@@ -15,3 +15,5 @@ test('Debería devolver un error 400 si el título está vacío', async () => {
   expect(response.statusCode).toBe(400);
   expect(response.body.errors[0].msg).toBe('El título es obligatorio');
 });
+
+
