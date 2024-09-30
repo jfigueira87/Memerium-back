@@ -1,13 +1,4 @@
-import { check, validationResult } from 'express-validator';
 import { body, param } from 'express-validator';
-
-export const handleValidation = (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).send(errors.array()[0].msg);
-    }
-    next();
-  };
 
   export const validateCreateOrUpdate = [
     body('title')
