@@ -1,6 +1,9 @@
 import request from 'supertest';
 import app from '../app.js';
 
+//test get all
+
+
 // Ejemplo de prueba
 test('Debería devolver un error 400 si el título está vacío', async () => {
   const response = await request(app)
