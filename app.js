@@ -21,9 +21,9 @@ export const startServer = async () => {
     
     // Solo iniciar el servidor si no está en modo de test
     if (process.env.NODE_ENV !== 'test') {
-    app.listen(PORT, () => {
-      console.log(`El servidor se ha levantado en el puerto 🖥️ ${PORT}`);
-    });
+      app.listen(PORT, () => {
+        console.log(`El servidor se ha levantado en el puerto 🖥️ ${PORT}`);
+      });
     }
   } catch (error) {
     console.error('❌ La conexión a la base de datos ha fallado:', error);
