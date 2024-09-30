@@ -1,4 +1,4 @@
-import Meme from '../models/memeModel.js'; // Importa el modelo correctamente
+import memeModel from '../models/memeModel.js'; // Importa el modelo correctamente
 import { validationResult } from 'express-validator';
 
 export const getMemes = async (req, res)=>{
@@ -53,8 +53,27 @@ export const createMeme = async (req, res) => {
   }
 };
 
-export const updateMeme = (req, res) => {
-  res.send("Update meme");
+export const updateMeme = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, category, tags, url } = req.body;
+    const [updated] = await memeModel.update(
+      { title, category, tags, url },
+      { where: { id } }
+    );
+
+    if (updated) {
+      const updatedMeme = await memeModel.findOne({ where: { id } });
+      res.status(200).json(updatedMeme);
+    } else {
+      res.status(404).json({ message: "Meme no encontrado." });
+    }
+  } catch (error) {
+    console.error("Error actualizando meme:", error);
+    res
+      .status(500)
+      .json({ error: "Error actualizando meme", details: error.message });
+  }
 };
 
 // DELETE meme
