@@ -1,9 +1,15 @@
 import Meme from '../models/memeModel.js'; // Importa el modelo correctamente
 import { validationResult } from 'express-validator';
 
-export const getMemes = (req, res) => {
-  res.send("Get all memes");
-};
+export const getMemes = async (req, res)=>{
+  try{
+  const memes = await memeModel.findAll ();
+  res.json(memes);
+  }
+  catch (error){
+      res.send({message: error.message})
+  }
+}
 
 export const getMeme = async (req, res) => {
   try {
