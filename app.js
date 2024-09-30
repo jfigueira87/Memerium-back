@@ -10,7 +10,7 @@ const app = express();
 app.use(router);
 app.use(cors());
 app.listen(PORT, () =>
-  console.log("Working server up 👍 http://localhost:8000/memes")
+  console.log("Working server up 👍 http://localhost:8000/meme")
 )
 
 
