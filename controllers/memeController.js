@@ -10,8 +10,22 @@ export const getMemes = async (req, res)=>{
     }
 }
 
-export const getMeme = (req, res) => {
-  res.send("Get one meme");
+export const getMeme = async (req, res) => {
+  try {
+    const memes = await memeModel.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!memes) {
+      return res.status(404).json("Meme not found");
+    }
+
+    return res.json(memes); // Esto ya envía el estado 200 por defecto
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
 };
 
 export const createMeme = (req, res) => {
