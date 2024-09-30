@@ -1,4 +1,4 @@
-import Meme from '../models/memeModel.js'; // Importa el modelo correctamente
+import memeModel from '../models/memeModel.js'; // Importa el modelo correctamente
 import { validationResult } from 'express-validator';
 
 export const getMemes = async (req, res)=>{
