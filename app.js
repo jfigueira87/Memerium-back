@@ -11,6 +11,8 @@ app.use(cors());
 app.use(express.json());
 app.use(router);
 
+let server;
+
 const startServer = async () => {
   try {
     
@@ -20,9 +22,11 @@ const startServer = async () => {
     await memeModel.sync({ force: false });
     console.log('El modelo está 👍🏻 ');
     
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
       console.log(`El servidor se ha levantado en el puerto 🖥️ ${PORT}`);
     });
+
+    
 
   } catch (error) {
     console.error('❌ La conexión a la base de datos ha fallado:', error);
@@ -30,3 +34,4 @@ const startServer = async () => {
 };
 
 startServer();
+module.exports = { app, server };
