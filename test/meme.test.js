@@ -23,8 +23,7 @@ jest.mock("../models/memeModel");
 describe("PUT /memes/:id", () => {
   it("Debe actualizar un meme y devolverlo", async () => {
     const mockMeme = {
-      id: 1,
-      title: "Título actualizado",
+      id: 1,name: "Título actualizado",
       category: "Categoría actualizada",
       tags: ["Tag actualizado"],
       url: "http://updated.com",
@@ -44,7 +43,7 @@ describe("PUT /memes/:id", () => {
     const response = await request(app)
       .put("/memes/1")
       .send({
-        title: "Título actualizado",
+        name: "Título actualizado",
         category: "Categoría actualizada",
         tags: ["Tag actualizado"],
         url: "http://updated.com",
@@ -60,7 +59,7 @@ describe("PUT /memes/:id", () => {
     const response = await request(app)
       .put("/memes/1")
       .send({
-        title: "Título actualizado",
+        name: "Título actualizado",
         category: "Categoría actualizada",
         tags: ["Tag actualizado"],
         url: "http://updated.com",
@@ -78,7 +77,7 @@ describe("PUT /memes/:id", () => {
 describe("POST /memes", () => {
   it("Debe crear un meme y devolverlo", async () => {
     const newMeme = {
-      title: "Nuevo Meme",
+      name: "Nuevo Meme",
       category: "Humor",
       tags: ["gracioso"],
       url: "http://example.com/meme.jpg",
@@ -109,7 +108,7 @@ describe("POST /memes", () => {
 
   it("Debe devolver un error 500 si hay un problema con la base de datos", async () => {
     const newMeme = {
-      title: "Nuevo Meme",
+      name: "Nuevo Meme",
       category: "Humor",
       tags: ["gracioso"],
       url: "http://example.com/meme.jpg",
