@@ -56,6 +56,7 @@ export const createMeme = async (req, res) => {
   try {
     const { name, category, tags, url } = req.body;
 
+    // Intenta crear el nuevo meme
     const newMeme = await memeModel.create({
       name,
       category,
@@ -65,10 +66,15 @@ export const createMeme = async (req, res) => {
 
     res.status(201).json(newMeme);
   } catch (error) {
+    // Si ocurre un error en la base de datos, asegúrate de devolver un estado 500
     console.error('Error al crear el meme:', error);
-    res.status(500).json({ message: 'Hubo un error al crear el meme', error: error.message });
+    res.status(500).json({
+      message: 'Hubo un error al crear el meme',
+      error: error.message,
+    });
   }
 };
+
 
 //=============
 // UPDATE meme

@@ -1,5 +1,7 @@
 import request from "supertest";
 import express from "express";
+import {handleValidationErrors} from "../utils/handleValidator.js"
+import { memeValidationRules, validateCreateOrUpdate } from "../validators/memeValidators.js";
 import {
   getMemes,
   getMeme,
@@ -7,20 +9,20 @@ import {
   updateMeme,
   deleteMeme,
 } from "../controllers/memeController.js";
-import { memeValidationRules, handleValidationErrors } from "../validators/memeValidators.js"; // Importar validaciones
+// import { memeValidationRules, handleValidationErrors } from "../validators/memeValidators.js"; // Importar validaciones
 import memeModel from "../models/memeModel.js";
 
 const app = express();
 app.use(express.json());
 
 // Rutas de la aplicación para testeo
-app.put("/memes/:id", updateMeme);
-app.post("/memes", memeValidationRules, handleValidationErrors, createMeme); // Agregar la validación y manejo de errores
+app.put("/meme/:id", updateMeme);
+app.post("/meme",memeValidationRules, handleValidationErrors, createMeme); // Agregar la validación y manejo de errores
 
 jest.mock("../models/memeModel");
 
 // Test para el método PUT (ya existente)
-describe("PUT /memes/:id", () => {
+describe("PUT /meme/:id", () => {
   it("Debe actualizar un meme y devolverlo", async () => {
     const mockMeme = {
       id: 1,name: "Título actualizado",
@@ -31,7 +33,7 @@ describe("PUT /memes/:id", () => {
     memeModel.update.mockResolvedValue([1]);
     memeModel.findOne.mockResolvedValue(mockMeme);
 
-    const response = await request(app).put("/memes/1").send(mockMeme);
+    const response = await request(app).put("/meme/1").send(mockMeme);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockMeme);
@@ -41,7 +43,7 @@ describe("PUT /memes/:id", () => {
     memeModel.update.mockResolvedValue([0]);
 
     const response = await request(app)
-      .put("/memes/1")
+      .put("/meme/1")
       .send({
         name: "Título actualizado",
         category: "Categoría actualizada",
@@ -57,7 +59,7 @@ describe("PUT /memes/:id", () => {
     memeModel.update.mockRejectedValue(new Error("Error en la base de datos"));
 
     const response = await request(app)
-      .put("/memes/1")
+      .put("/meme/1")
       .send({
         name: "Título actualizado",
         category: "Categoría actualizada",
@@ -74,7 +76,7 @@ describe("PUT /memes/:id", () => {
 });
 
 // Test para el método POST (nuevo)
-describe("POST /memes", () => {
+describe("POST /meme", () => {
   it("Debe crear un meme y devolverlo", async () => {
     const newMeme = {
       name: "Nuevo Meme",
@@ -86,7 +88,7 @@ describe("POST /memes", () => {
     // Simular la creación exitosa del meme
     memeModel.create.mockResolvedValue(newMeme);
 
-    const response = await request(app).post("/memes").send(newMeme);
+    const response = await request(app).post("/meme").send(newMeme);
 
     expect(response.status).toBe(201); // Código 201 para creación exitosa
     expect(response.body).toEqual(newMeme);
@@ -100,7 +102,7 @@ describe("POST /memes", () => {
     };
 
     // No mockeamos `create` ya que no debería llamarse con datos incompletos
-    const response = await request(app).post("/memes").send(incompleteMeme);
+    const response = await request(app).post("/meme").send(incompleteMeme);
 
     expect(response.status).toBe(400); // Código 400 para validación fallida
     expect(response.body.errors).toBeDefined(); // Esperamos que haya errores de validación
@@ -117,7 +119,7 @@ describe("POST /memes", () => {
     // Simular un error en la base de datos
     memeModel.create.mockRejectedValue(new Error("Error en la base de datos"));
 
-    const response = await request(app).post("/memes").send(newMeme);
+    const response = await request(app).post("/meme").send(newMeme);
 
     expect(response.status).toBe(500); // Código 500 para errores del servidor
     expect(response.body).toEqual({
