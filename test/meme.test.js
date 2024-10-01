@@ -7,14 +7,19 @@ import {
   updateMeme,
   deleteMeme,
 } from "../controllers/memeController.js";
+import { memeValidationRules, handleValidationErrors } from "../validators/memeValidators.js"; // Importar validaciones
 import memeModel from "../models/memeModel.js";
 
 const app = express();
 app.use(express.json());
+
+// Rutas de la aplicación para testeo
 app.put("/memes/:id", updateMeme);
+app.post("/memes", memeValidationRules, handleValidationErrors, createMeme); // Agregar la validación y manejo de errores
 
 jest.mock("../models/memeModel");
 
+// Test para el método PUT (ya existente)
 describe("PUT /memes/:id", () => {
   it("Debe actualizar un meme y devolverlo", async () => {
     const mockMeme = {
@@ -65,6 +70,60 @@ describe("PUT /memes/:id", () => {
     expect(response.body).toEqual({
       error: "Error actualizando meme",
       details: "Error en la base de datos",
+    });
+  });
+});
+
+// Test para el método POST (nuevo)
+describe("POST /memes", () => {
+  it("Debe crear un meme y devolverlo", async () => {
+    const newMeme = {
+      title: "Nuevo Meme",
+      category: "Humor",
+      tags: ["gracioso"],
+      url: "http://example.com/meme.jpg",
+    };
+
+    // Simular la creación exitosa del meme
+    memeModel.create.mockResolvedValue(newMeme);
+
+    const response = await request(app).post("/memes").send(newMeme);
+
+    expect(response.status).toBe(201); // Código 201 para creación exitosa
+    expect(response.body).toEqual(newMeme);
+  });
+
+  it("Debe devolver un error 400 si falta información requerida", async () => {
+    const incompleteMeme = {
+      category: "Humor",
+      tags: ["gracioso"],
+      url: "http://example.com/meme.jpg",
+    };
+
+    // No mockeamos `create` ya que no debería llamarse con datos incompletos
+    const response = await request(app).post("/memes").send(incompleteMeme);
+
+    expect(response.status).toBe(400); // Código 400 para validación fallida
+    expect(response.body.errors).toBeDefined(); // Esperamos que haya errores de validación
+  });
+
+  it("Debe devolver un error 500 si hay un problema con la base de datos", async () => {
+    const newMeme = {
+      title: "Nuevo Meme",
+      category: "Humor",
+      tags: ["gracioso"],
+      url: "http://example.com/meme.jpg",
+    };
+
+    // Simular un error en la base de datos
+    memeModel.create.mockRejectedValue(new Error("Error en la base de datos"));
+
+    const response = await request(app).post("/memes").send(newMeme);
+
+    expect(response.status).toBe(500); // Código 500 para errores del servidor
+    expect(response.body).toEqual({
+      message: "Hubo un error al crear el meme",
+      error: "Error en la base de datos",
     });
   });
 });

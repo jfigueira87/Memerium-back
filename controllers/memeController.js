@@ -1,17 +1,22 @@
 import memeModel from '../models/memeModel.js'; // Importa el modelo correctamente
 import { validationResult } from 'express-validator';
 
-export const getMemes = async (req, res)=>{
-  try{
-  const memes = await memeModel.findAll ();
-  res.json(memes);
+export const getMemes = async (req, res) => {
+  try {
+    const memes = await memeModel.findAll();
+    res.json(memes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  catch (error){
-      res.send({message: error.message})
-  }
-}
+};
 
 export const getMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const memes = await memeModel.findOne({
       where: {
@@ -20,12 +25,12 @@ export const getMeme = async (req, res) => {
     });
 
     if (!memes) {
-      return res.status(404).json("Meme not found");
+      return res.status(404).json("Meme no encontrado");
     }
 
     return res.json(memes); // Esto ya envía el estado 200 por defecto
   } catch (error) {
-    return res.status(500).json(error.message);
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -39,7 +44,7 @@ export const createMeme = async (req, res) => {
   try {
     const { title, category, tags, url } = req.body;
 
-    const newMeme = await Meme.create({
+    const newMeme = await memeModel.create({
       title,
       category,
       tags,
@@ -54,6 +59,12 @@ export const createMeme = async (req, res) => {
 };
 
 export const updateMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const { id } = req.params;
     const { title, category, tags, url } = req.body;
@@ -78,6 +89,12 @@ export const updateMeme = async (req, res) => {
 
 // DELETE meme
 export const deleteMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const { id } = req.params;
     console.log(`Intentando eliminar el meme con ID: ${id}`);
