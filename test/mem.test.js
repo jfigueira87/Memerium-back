@@ -6,7 +6,7 @@ test('Debería devolver un error 400 si el título está vacío', async () => {
   const response = await request(app)
     .post('/api/meme')
     .send({
-      title: '', // Campo vacío para provocar error
+      name: '', // Campo vacío para provocar error
       category: 'Humor',
       tags: 'divertido',
       url: 'https://example.com/meme.jpg'

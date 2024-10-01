@@ -1,16 +1,24 @@
 import memeModel from '../models/memeModel.js'; // Importa el modelo correctamente
 import { validationResult } from 'express-validator';
 
-export const getMemes = async (req, res)=>{
-  try{
-  const memes = await memeModel.findAll ();
-  res.json(memes);
+//=============
+// GET ALL meme
+//=============
+export const getMemes = async (req, res) => {
+  try {
+    const memes = await memeModel.findAll();
+    res.status(200).json(memes);
+  } catch (error) {
+    console.error("Error encontrando memes:", error);
+    res
+      .status(500)
+      .json({ error: "Ha ocurrido un error mientras se encontraba memes." });
   }
-  catch (error){
-      res.send({message: error.message})
-  }
-}
+};
 
+//=============
+// GET ONE meme
+//=============
 export const getMeme = async (req, res) => {
   try {
     const memes = await memeModel.findOne({
@@ -29,6 +37,9 @@ export const getMeme = async (req, res) => {
   }
 };
 
+//=============
+// CREATE meme
+//=============
 export const createMeme = async (req, res) => {
   // Manejar errores de validación
   const errors = validationResult(req);
@@ -37,10 +48,10 @@ export const createMeme = async (req, res) => {
   }
 
   try {
-    const { title, category, tags, url } = req.body;
+    const { name, category, tags, url } = req.body;
 
-    const newMeme = await Meme.create({
-      title,
+    const newMeme = await memeModel.create({
+      name,
       category,
       tags,
       url,
@@ -53,12 +64,15 @@ export const createMeme = async (req, res) => {
   }
 };
 
+//=============
+// UPDATE meme
+//=============
 export const updateMeme = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, category, tags, url } = req.body;
+    const { name, category, tags, url } = req.body;
     const [updated] = await memeModel.update(
-      { title, category, tags, url },
+      { name, category, tags, url },
       { where: { id } }
     );
 
@@ -75,8 +89,9 @@ export const updateMeme = async (req, res) => {
       .json({ error: "Error actualizando meme", details: error.message });
   }
 };
-
+//=============
 // DELETE meme
+//=============
 export const deleteMeme = async (req, res) => {
   try {
     const { id } = req.params;

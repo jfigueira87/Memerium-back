@@ -1,7 +1,7 @@
 import { body, param } from 'express-validator';
 
   export const validateCreateOrUpdate = [
-    body('title')
+    body('name')
       .notEmpty()
       .withMessage('🚨El título es obligatorio🚨')
       .isString()
