@@ -39,7 +39,7 @@ export const createMeme = async (req, res) => {
   try {
     const { title, category, tags, url } = req.body;
 
-    const newMeme = await Meme.create({
+    const newMeme = await memeModel.create({
       title,
       category,
       tags,
