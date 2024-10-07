@@ -1,7 +1,7 @@
 import request from "supertest";
 import express from "express";
 import {handleValidationErrors} from "../utils/handleValidator.js"
-import { memeValidationRules, validateCreateOrUpdate } from "../validators/memeValidators.js";
+import { memeValidationRules} from "../validators/memeValidators.js";
 import {
   getMemes,
   getMeme,
@@ -9,7 +9,6 @@ import {
   updateMeme,
   deleteMeme,
 } from "../controllers/memeController.js";
-// import { memeValidationRules, handleValidationErrors } from "../validators/memeValidators.js"; // Importar validaciones
 import memeModel from "../models/memeModel.js";
 
 const app = express();
