@@ -17,14 +17,15 @@ app.use(express.json());
 // Rutas de la aplicación para testeo
 app.put("/meme/:id", updateMeme);
 app.post("/meme",memeValidationRules, handleValidationErrors, createMeme); // Agregar la validación y manejo de errores
-
+app.get("/meme/:id", getMeme);
 jest.mock("../models/memeModel");
 
 // Test para el método PUT (ya existente)
 describe("PUT /meme/:id", () => {
   test("Debe actualizar un meme y devolverlo", async () => {
     const mockMeme = {
-      id: 1,name: "Título actualizado",
+      id: 1,
+      name: "Título actualizado",
       category: "Categoría actualizada",
       tags: ["Tag actualizado"],
       url: "http://updated.com",
@@ -127,3 +128,18 @@ describe("POST /meme", () => {
     });
   });
 });
+
+//GET ONE BY ID
+
+describe("GET /meme/:id", () => {
+  test("Debe actualizar un meme y devolverlo", async () => {
+    const memes = {
+      id: 1,
+      name: "Madrugon universitario",
+      category: "Programacion",
+      tags:["Calamardo"],
+      url: "https://res.cloudinary.com/dz53okn10/image/upload/v1725877264/calamardo_x1x87v.jpg",
+
+    }
+  })
+})
