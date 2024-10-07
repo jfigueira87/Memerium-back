@@ -5,11 +5,12 @@ import router from "./routes/routes.js";
 import cors from 'cors';
 import { PORT } from "./config.js";
 
-const app = express();
+export const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(router);
 
+export let server;
 // Función para iniciar la base de datos y el servidor
 export const startServer = async () => {
   try {
@@ -21,7 +22,7 @@ export const startServer = async () => {
     
     // Solo iniciar el servidor si no está en modo de test
     if (process.env.NODE_ENV !== 'test') {
-      app.listen(PORT, () => {
+      server = app.listen(PORT, () => {
         console.log(`El servidor se ha levantado en el puerto 🖥️ ${PORT}`);
       });
     }
@@ -32,4 +33,3 @@ export const startServer = async () => {
 
 // Llamar a la función para iniciar el servidor
 startServer();
-module.exports = { app, server };

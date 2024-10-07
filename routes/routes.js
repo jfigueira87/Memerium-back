@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getMeme, getMemes, createMeme, updateMeme, deleteMeme } from "../controllers/memeController.js";
-import { validateCreateOrUpdate, validateIdParam } from "../validators/memeValidators.js";
+import { validateCreateOrUpdate, validateIdParam, memeValidationRules } from "../validators/memeValidators.js";
 import {handleValidationErrors} from "../utils/handleValidator.js"
 
 
