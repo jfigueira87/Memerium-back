@@ -132,7 +132,7 @@ describe("POST /meme", () => {
 //GET ONE BY ID
 
 describe("GET /meme/:id", () => {
-  test("Debe actualizar un meme y devolverlo", async () => {
+  test("Deberia devolver el contenido del ID cuando encuentra el meme existente", async () => {
     const memes = {
       id: 1,
       name: "Madrugon universitario",
@@ -143,3 +143,19 @@ describe("GET /meme/:id", () => {
     }
   })
 })
+
+
+// DELETE
+
+describe("DELETE /meme/:id", () =>{
+  test("Deberia eliminar el meme", async () => {
+    const deleteMeme = {
+      id: 1,
+      name: "madrugon universitario",
+      category:"Programacion",
+      tags: ["Calamardo"],
+      url: "https://res.cloudinary.com/dz53okn10/image/upload/v1725877264/calamardo_x1x87v.jpg",
+    }
+  })
+})
+
