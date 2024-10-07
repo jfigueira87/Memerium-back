@@ -22,7 +22,7 @@ jest.mock("../models/memeModel");
 
 // Test para el método PUT (ya existente)
 describe("PUT /meme/:id", () => {
-  it("Debe actualizar un meme y devolverlo", async () => {
+  test("Debe actualizar un meme y devolverlo", async () => {
     const mockMeme = {
       id: 1,name: "Título actualizado",
       category: "Categoría actualizada",
@@ -38,7 +38,7 @@ describe("PUT /meme/:id", () => {
     expect(response.body).toEqual(mockMeme);
   });
 
-  it("Debe devolver un error 404 si no se encuentra el meme", async () => {
+  test("Debe devolver un error 404 si no se encuentra el meme", async () => {
     memeModel.update.mockResolvedValue([0]);
 
     const response = await request(app)
@@ -54,7 +54,7 @@ describe("PUT /meme/:id", () => {
     expect(response.body).toEqual({ message: "Meme no encontrado." });
   });
 
-  it("should return 500 if there is an error", async () => {
+  test("should return 500 if there is an error", async () => {
     memeModel.update.mockRejectedValue(new Error("Error en la base de datos"));
 
     const response = await request(app)
@@ -76,7 +76,7 @@ describe("PUT /meme/:id", () => {
 
 // Test para el método POST (nuevo)
 describe("POST /meme", () => {
-  it("Debe crear un meme y devolverlo", async () => {
+  test("Debe crear un meme y devolverlo", async () => {
     const newMeme = {
       name: "Nuevo Meme",
       category: "Humor",
@@ -93,7 +93,7 @@ describe("POST /meme", () => {
     expect(response.body).toEqual(newMeme);
   });
 
-  it("Debe devolver un error 400 si falta información requerida", async () => {
+  test("Debe devolver un error 400 si falta información requerida", async () => {
     const incompleteMeme = {
       category: "Humor",
       tags: ["gracioso"],
@@ -107,7 +107,7 @@ describe("POST /meme", () => {
     expect(response.body.errors).toBeDefined(); // Esperamos que haya errores de validación
   });
 
-  it("Debe devolver un error 500 si hay un problema con la base de datos", async () => {
+  test("Debe devolver un error 500 si hay un problema con la base de datos", async () => {
     const newMeme = {
       name: "Nuevo Meme",
       category: "Humor",
