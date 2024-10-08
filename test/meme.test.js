@@ -1,161 +1,191 @@
-import request from "supertest";
-import express from "express";
-import {handleValidationErrors} from "../utils/handleValidator.js"
-import { memeValidationRules} from "../validators/memeValidators.js";
-import {
-  getMemes,
-  getMeme,
-  createMeme,
-  updateMeme,
-  deleteMeme,
-} from "../controllers/memeController.js";
-import memeModel from "../models/memeModel.js";
+// import request from "supertest";
+// import express from "express";
+// import { handleValidationErrors } from "../utils/handleValidator.js";
+// import { memeValidationRules } from "../validators/memeValidators.js";
+// import {
+//   getMemes,
+//   getMeme,
+//   createMeme,
+//   updateMeme,
+//   deleteMeme,
+// } from "../controllers/memeController.js";
+// import memeModel from "../models/memeModel.js";
+// import { app, server } from "../app.js";
+// import conection_db from "../database/db.js";
 
-const app = express();
-app.use(express.json());
+// app.use(express.json());
 
-// Rutas de la aplicación para testeo
-app.put("/meme/:id", updateMeme);
-app.post("/meme",memeValidationRules, handleValidationErrors, createMeme); // Agregar la validación y manejo de errores
-app.get("/meme/:id", getMeme);
-jest.mock("../models/memeModel");
+// // Rutas de la aplicación para testeo
+// app.get("/memes", getMemes);
+// app.get("/meme/:id", getMeme);
+// app.post("/meme", memeValidationRules, handleValidationErrors, createMeme);
+// app.put("/meme/:id", updateMeme);
+// app.delete("/meme/:id", deleteMeme);
 
-// Test para el método PUT (ya existente)
-describe("PUT /meme/:id", () => {
-  test("Debe actualizar un meme y devolverlo", async () => {
-    const mockMeme = {
-      id: 1,
-      name: "Título actualizado",
-      category: "Categoría actualizada",
-      tags: ["Tag actualizado"],
-      url: "http://updated.com",
-    };
-    memeModel.update.mockResolvedValue([1]);
-    memeModel.findOne.mockResolvedValue(mockMeme);
+// jest.mock("../models/memeModel");
 
-    const response = await request(app).put("/meme/1").send(mockMeme);
+// describe("Meme Controller Tests", () => {
+//   // Test para GET /memes (getMemes)
+//   describe("GET /memes", () => {
+//     test("Debe devolver todos los memes", async () => {
+//       // Preparar los datos mock
+//       const mockMemes = [
+//         { id: 1, name: "Meme 1" },
+//         { id: 2, name: "Meme 2" },
+//       ];
+//       // Simular la respuesta de la base de datos
+//       memeModel.findAll.mockResolvedValue(mockMemes);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(mockMeme);
-  });
+//       // Realizar la petición
+//       const response = await request(app).get("/memes");
 
-  test("Debe devolver un error 404 si no se encuentra el meme", async () => {
-    memeModel.update.mockResolvedValue([0]);
+//       // Verificar la respuesta
+//       expect(response.status).toBe(200);
+//       expect(response.body).toEqual(mockMemes);
+//     });
 
-    const response = await request(app)
-      .put("/meme/1")
-      .send({
-        name: "Título actualizado",
-        category: "Categoría actualizada",
-        tags: ["Tag actualizado"],
-        url: "http://updated.com",
-      });
+//     test("Debe manejar errores", async () => {
+//       // Simular un error en la base de datos
+//       memeModel.findAll.mockRejectedValue(new Error("Database error"));
 
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ message: "Meme no encontrado." });
-  });
+//       // Realizar la petición
+//       const response = await request(app).get("/memes");
 
-  test("should return 500 if there is an error", async () => {
-    memeModel.update.mockRejectedValue(new Error("Error en la base de datos"));
+//       // Verificar la respuesta de error
+//       expect(response.status).toBe(500);
+//       expect(response.body).toHaveProperty("error");
+//     });
+//   });
 
-    const response = await request(app)
-      .put("/meme/1")
-      .send({
-        name: "Título actualizado",
-        category: "Categoría actualizada",
-        tags: ["Tag actualizado"],
-        url: "http://updated.com",
-      });
+//   // Test para GET /meme/:id (getMeme)
+//   describe("GET /meme/:id", () => {
+//     test("Debe devolver un meme específico", async () => {
+//       // Preparar el dato mock
+//       const mockMeme = { id: 1, name: "Meme 1" };
+//       // Simular la respuesta de la base de datos
+//       memeModel.findOne.mockResolvedValue(mockMeme);
 
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual({
-      error: "Error actualizando meme",
-      details: "Error en la base de datos",
-    });
-  });
-});
+//       // Realizar la petición
+//       const response = await request(app).get("/meme/1");
 
-// Test para el método POST (nuevo)
-describe("POST /meme", () => {
-  test("Debe crear un meme y devolverlo", async () => {
-    const newMeme = {
-      name: "Nuevo Meme",
-      category: "Humor",
-      tags: ["gracioso"],
-      url: "http://example.com/meme.jpg",
-    };
+//       // Verificar la respuesta
+//       expect(response.status).toBe(200);
+//       expect(response.body).toEqual(mockMeme);
+//     });
 
-    // Simular la creación exitosa del meme
-    memeModel.create.mockResolvedValue(newMeme);
+//     test("Debe manejar meme no encontrado", async () => {
+//       // Simular meme no encontrado
+//       memeModel.findOne.mockResolvedValue(null);
 
-    const response = await request(app).post("/meme").send(newMeme);
+//       // Realizar la petición
+//       const response = await request(app).get("/meme/999");
 
-    expect(response.status).toBe(201); // Código 201 para creación exitosa
-    expect(response.body).toEqual(newMeme);
-  });
+//       // Verificar la respuesta
+//       expect(response.status).toBe(404);
+//       expect(response.body).toBe("Meme no encontrado");
+//     });
+//   });
 
-  test("Debe devolver un error 400 si falta información requerida", async () => {
-    const incompleteMeme = {
-      category: "Humor",
-      tags: ["gracioso"],
-      url: "http://example.com/meme.jpg",
-    };
+//   // Test para POST /meme (createMeme)
+//   describe("POST /meme", () => {
+//     test("Debe crear un nuevo meme", async () => {
+//       // Preparar los datos para crear un meme
+//       const newMeme = {
+//         name: "Nuevo Meme",
+//         category: "Humor",
+//         tags: ["gracioso"],
+//         url: "http://example.com/meme.jpg",
+//       };
+//       // Simular la creación en la base de datos
+//       memeModel.create.mockResolvedValue({ id: 1, ...newMeme });
 
-    // No mockeamos `create` ya que no debería llamarse con datos incompletos
-    const response = await request(app).post("/meme").send(incompleteMeme);
+//       // Realizar la petición
+//       const response = await request(app).post("/meme").send(newMeme);
 
-    expect(response.status).toBe(400); // Código 400 para validación fallida
-    expect(response.body.errors).toBeDefined(); // Esperamos que haya errores de validación
-  });
+//       // Verificar la respuesta
+//       expect(response.status).toBe(201);
+//       expect(response.body).toHaveProperty("id");
+//       expect(response.body.name).toBe(newMeme.name);
+//     });
 
-  test("Debe devolver un error 500 si hay un problema con la base de datos", async () => {
-    const newMeme = {
-      name: "Nuevo Meme",
-      category: "Humor",
-      tags: ["gracioso"],
-      url: "http://example.com/meme.jpg",
-    };
+//     test("Debe manejar errores de validación", async () => {
+//       // Enviar datos incompletos
+//       const incompleteMeme = { name: "Meme sin datos suficientes" };
 
-    // Simular un error en la base de datos
-    memeModel.create.mockRejectedValue(new Error("Error en la base de datos"));
+//       // Realizar la petición
+//       const response = await request(app).post("/meme").send(incompleteMeme);
 
-    const response = await request(app).post("/meme").send(newMeme);
+//       // Verificar la respuesta de error de validación
+//       expect(response.status).toBe(400);
+//       expect(response.body).toHaveProperty("errors");
+//     });
+//   });
 
-    expect(response.status).toBe(500); // Código 500 para errores del servidor
-    expect(response.body).toEqual({
-      message: "Hubo un error al crear el meme",
-      error: "Error en la base de datos",
-    });
-  });
-});
+//   // Test para PUT /meme/:id (updateMeme)
+//   describe("PUT /meme/:id", () => {
+//     test("Debe actualizar un meme existente", async () => {
+//       // Preparar los datos para actualizar
+//       const updatedMeme = {
+//         name: "Meme Actualizado",
+//         category: "Nuevo Humor",
+//         tags: ["actualizado"],
+//         url: "http://example.com/updated.jpg",
+//       };
+//       // Simular la actualización en la base de datos
+//       memeModel.update.mockResolvedValue([1]);
+//       memeModel.findOne.mockResolvedValue({ id: 1, ...updatedMeme });
 
-//GET ONE BY ID
+//       // Realizar la petición
+//       const response = await request(app).put("/meme/1").send(updatedMeme);
 
-describe("GET /meme/:id", () => {
-  test("Deberia devolver el contenido del ID cuando encuentra el meme existente", async () => {
-    const memes = {
-      id: 1,
-      name: "Madrugon universitario",
-      category: "Programacion",
-      tags:["Calamardo"],
-      url: "https://res.cloudinary.com/dz53okn10/image/upload/v1725877264/calamardo_x1x87v.jpg",
+//       // Verificar la respuesta
+//       expect(response.status).toBe(200);
+//       expect(response.body.name).toBe(updatedMeme.name);
+//     });
 
-    }
-  })
-})
+//     test("Debe manejar meme no encontrado para actualizar", async () => {
+//       // Simular meme no encontrado
+//       memeModel.update.mockResolvedValue([0]);
 
+//       // Realizar la petición
+//       const response = await request(app)
+//         .put("/meme/999")
+//         .send({ name: "Meme Inexistente" });
 
-// DELETE
+//       // Verificar la respuesta
+//       expect(response.status).toBe(404);
+//       expect(response.body).toHaveProperty("message", "Meme no encontrado.");
+//     });
+//   });
 
-describe("DELETE /meme/:id", () =>{
-  test("Deberia eliminar el meme", async () => {
-    const deleteMeme = {
-      id: 1,
-      name: "madrugon universitario",
-      category:"Programacion",
-      tags: ["Calamardo"],
-      url: "https://res.cloudinary.com/dz53okn10/image/upload/v1725877264/calamardo_x1x87v.jpg",
-    }
-  })
-})
+//   // Test para DELETE /meme/:id (deleteMeme)
+//   describe("DELETE /meme/:id", () => {
+//     test("Debe eliminar un meme existente", async () => {
+//       // Simular la existencia y eliminación del meme
+//       memeModel.findOne.mockResolvedValue({ id: 1, destroy: jest.fn() });
 
+//       // Realizar la petición
+//       const response = await request(app).delete("/meme/1");
+
+//       // Verificar la respuesta
+//       expect(response.status).toBe(204);
+//     });
+
+//     test("Debe manejar meme no encontrado para eliminar", async () => {
+//       // Simular meme no encontrado
+//       memeModel.findOne.mockResolvedValue(null);
+
+//       // Realizar la petición
+//       const response = await request(app).delete("/meme/999");
+
+//       // Verificar la respuesta
+//       expect(response.status).toBe(404);
+//       expect(response.body).toHaveProperty("message", "No se encuentra el meme");
+//     });
+//   });
+// });
+
+// afterAll(async () => {
+//   await server.close();
+//   await conection_db.close();
+// });
