@@ -31,6 +31,33 @@ describe("Meme CRUD Tests", () => {
             })   
         })
 
+
+        describe('PUT /meme/:id', () => {
+            test("Debe actualizar un meme existente", async () => {
+              // Creamos un meme para actualizar
+              const meme = await memeModel.create({
+                name: "meme actualizado",
+                category: "Humor",
+                tags: "gracioso",
+                url: "http://link-a-la-imagen.com/meme.jpg"
+              });
+          
+              const updatedMeme = {
+                name: "meme actualizado",
+                category: "Humor actual",
+                tags: "gracioso, meme actualizado",
+                url: "http://link-a-la-imagen.com/meme-actualizado.jpg"
+              };
+              
+              // Simulamos la petición PUT a /meme/1 (con el ID del meme)
+              const response = await request(app).put(`/meme/${meme.id}`).send(updatedMeme);
+          
+              expect(response.status).toBe(200);  // Esperamos un 200 para actualización exitosa
+            });
+          });
+          
+          
+
         describe('GET meme',()=>{
             test("Debe devolver todos los memes", async () => {
 
@@ -59,6 +86,7 @@ describe("Meme CRUD Tests", () => {
                 expect(response.status).toBe(204);
             })
         })
+
 
            
 })
