@@ -12,8 +12,9 @@ router.get("/meme", getMemes);
 // GET one meme by ID
 router.get("/meme/:id", validateIdParam, handleValidationErrors, getMeme);
 
-// CREATE meme
-router.post("/meme", validateCreateOrUpdate, handleValidationErrors, createMeme);
+// CREATE meme - Usa la validación de creación (POST)
+router.post("/meme", memeValidationRules, handleValidationErrors, createMeme);
+
 
 // PUT meme by ID
 router.put("/meme/:id", validateIdParam, validateCreateOrUpdate, handleValidationErrors, updateMeme);
