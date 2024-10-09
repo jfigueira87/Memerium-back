@@ -36,14 +36,14 @@ describe("Meme CRUD Tests", () => {
             test("Debe actualizar un meme existente", async () => {
               // Creamos un meme para actualizar
               const meme = await memeModel.create({
-                name: "meme actualizado",
+                name: "test",
                 category: "Humor",
                 tags: "gracioso",
                 url: "http://link-a-la-imagen.com/meme.jpg"
               });
           
               const updatedMeme = {
-                name: "meme actualizado",
+                name: "test",
                 category: "Humor actual",
                 tags: "gracioso, meme actualizado",
                 url: "http://link-a-la-imagen.com/meme-actualizado.jpg"
