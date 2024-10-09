@@ -1,31 +1,26 @@
-import memeModel from '../models/memeModel.js'; // Importa el modelo correctamente
-import { validationResult } from 'express-validator';
+import Meme from "../models/memeModel.js";
+import { validationResult } from "express-validator";
 
-export const getMemes = async (req, res)=>{
-  try{
-  const memes = await memeModel.findAll ();
-  res.json(memes);
+export const getMemes = async (req, res) => {
+  try {
+    const memes = await Meme.find();
+    res.json(memes);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
   }
-  catch (error){
-      res.send({message: error.message})
-  }
-}
+};
 
 export const getMeme = async (req, res) => {
   try {
-    const memes = await memeModel.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
+    const meme = await Meme.findById(req.params.id);
 
-    if (!memes) {
-      return res.status(404).json("Meme not found");
+    if (!meme) {
+      return res.status(404).json("Meme no encontrado");
     }
 
-    return res.json(memes); // Esto ya envía el estado 200 por defecto
+    res.json(meme);
   } catch (error) {
-    return res.status(500).json(error.message);
+    res.status(500).json(error.message);
   }
 };
 
@@ -37,42 +32,41 @@ export const createMeme = async (req, res) => {
   }
 
   try {
-    const { title, category, tags, url } = req.body;
+    const { name, category, tags, url } = req.body;
 
-    const newMeme = await Meme.create({
-      title,
-      category,
-      tags,
-      url,
-    });
+    const newMeme = new Meme({ name, category, tags, url });
+    const savedMeme = await newMeme.save();
 
-    res.status(201).json(newMeme);
+    res.status(201).json(savedMeme);
   } catch (error) {
-    console.error('Error al crear el meme:', error);
-    res.status(500).json({ message: 'Hubo un error al crear el meme', error: error.message });
+    console.error("Error al crear el meme:", error);
+    res.status(500).json({
+      message: "Hubo un error al crear el meme",
+      error: error.message,
+    });
   }
 };
 
 export const updateMeme = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, category, tags, url } = req.body;
-    const [updated] = await memeModel.update(
-      { title, category, tags, url },
-      { where: { id } }
+    const { name, category, tags, url } = req.body;
+    const updatedMeme = await Meme.findByIdAndUpdate(
+      id,
+      { name, category, tags, url },
+      { new: true }
     );
 
-    if (updated) {
-      const updatedMeme = await memeModel.findOne({ where: { id } });
-      res.status(200).json(updatedMeme);
-    } else {
-      res.status(404).json({ message: "Meme no encontrado." });
+    if (!updatedMeme) {
+      return res.status(404).json({ message: "Meme no encontrado." });
     }
+
+    res.status(200).json(updatedMeme);
   } catch (error) {
     console.error("Error actualizando meme:", error);
     res
       .status(500)
-      .json({ error: "Error actualizando meme", details: error.message });
+      .json({ message: "Error actualizando meme", error: error.message });
   }
 };
 
@@ -82,18 +76,19 @@ export const deleteMeme = async (req, res) => {
     const { id } = req.params;
     console.log(`Intentando eliminar el meme con ID: ${id}`);
 
-    // Verificamos si el meme existe antes de eliminarlo
-    const meme = await memeModel.findOne({ where: { id } });
+    const meme = await Meme.findById(id);
     if (!meme) {
-      console.log('Meme no encontrado para eliminar');
-      return res.status(404).json({ message: 'No se encuentra el meme' });
+      console.log("Meme no encontrado para eliminar");
+      return res.status(404).json({ message: "No se encuentra el meme" });
     }
 
-    await meme.destroy();
+    await meme.deleteOne();
     console.log(`Meme con ID ${id} eliminado con éxito`);
-    return res.sendStatus(204);
+    res.sendStatus(204);
   } catch (error) {
-    console.error('Error al eliminar el meme:', error);
-    return res.status(500).json({ message: 'Error interno del servidor' });
+    console.error("Error al eliminar el meme:", error);
+    res
+      .status(500)
+      .json({ message: "Error interno del servidor", error: error.message });
   }
 };

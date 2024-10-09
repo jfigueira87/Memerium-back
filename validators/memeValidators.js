@@ -1,4 +1,4 @@
-import { check, validationResult } from 'express-validator';
+import { validationResult } from 'express-validator';
 import { body, param } from 'express-validator';
 
 export const handleValidation = (req, res, next) => {
@@ -10,7 +10,7 @@ export const handleValidation = (req, res, next) => {
   };
 
   export const validateCreateOrUpdate = [
-    body('title')
+    body('name')
       .notEmpty()
       .withMessage('🚨El título es obligatorio🚨')
       .isString()
@@ -35,6 +35,6 @@ export const handleValidation = (req, res, next) => {
   // Validaciones para rutas que incluyen el ID como parámetro
   export const validateIdParam = [
     param('id')
-      .isInt()
-      .withMessage('🚨El ID debe ser un número entero🚨')
+      .isString()
+      .withMessage('🚨El ID debe ser una cadena de texto🚨')
   ];

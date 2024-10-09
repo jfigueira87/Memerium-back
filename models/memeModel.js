@@ -1,26 +1,24 @@
-import { DataTypes } from "sequelize";
-import conection_db from "../database/db.js";
+import mongoose from 'mongoose';
 
-const memeModel = conection_db.define(
-    'Meme',
-    {
-        title:{
-            type: DataTypes.STRING,
-            allowNull: false,            
-        },
-        category:{
-            type:DataTypes.STRING,
-            allowNull:false,
-        },
-        tags:{
-            type:DataTypes.STRING,
-            allowNull:false,        
-        },
-        url:{
-            type:DataTypes.STRING,
-            allowNull:false,
-        }
-    }
-)
+const memeSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true
+  },
+  tags: {
+    type: String,
+    required: true
+  },
+  url: {
+    type: String,
+    required: true
+  }
+});
 
-export default memeModel;
+const Meme = mongoose.model('Meme', memeSchema);
+
+export default Meme;

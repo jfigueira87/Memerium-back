@@ -15,18 +15,18 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // GET all memes
-router.get("/meme", getMemes);
+router.get("/", getMemes);
 
 // GET one meme by ID
-router.get("/meme/:id", validateIdParam, handleValidationErrors, getMeme);
+router.get("/:id", validateIdParam, handleValidationErrors, getMeme);
 
 // CREATE meme
-router.post("/meme", validateCreateOrUpdate, handleValidationErrors, createMeme);
+router.post("/", validateCreateOrUpdate, handleValidationErrors, createMeme);
 
 // PUT meme by ID
-router.put("/meme/:id", [...validateCreateOrUpdate, ...validateIdParam], handleValidationErrors, updateMeme);
+router.put("/:id", [...validateCreateOrUpdate, ...validateIdParam], handleValidationErrors, updateMeme);
 
 // DELETE meme by ID
-router.delete("/meme/:id", validateIdParam, handleValidationErrors, deleteMeme);
+router.delete("/:id", validateIdParam, handleValidationErrors, deleteMeme);
 
 export default router;
