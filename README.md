@@ -2,7 +2,7 @@
 
 ¡Bienvenido al backend de Memerium; **nuestro primer proyecto de backend** 🚀! Este proyecto gestiona los datos de las obras de arte y exposiciones que se realizan en Memerium; un museo de memes virtual (https://github.com/jfigueira87/Memerium). Este backend, ha sido diseñado para facilitar la creación, consulta, actualización y eliminación (CRUD) de información en nuestra base de datos, asegurando una experiencia fluida para los usuarios amantes del arte y la historia.
 
-!(https://github.com/jfigueira87/Memerium-back/blob/develop/src/assets/memerium_frontend.png)
+![Example Chat](./src/assets/memerium_frontend.png)
 
 ## 🚀 Tecnologías Utilizadas
 
