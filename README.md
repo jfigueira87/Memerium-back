@@ -80,7 +80,7 @@ Para ejecutar las pruebas, usa el siguiente comando:
 ```
 Las pruebas verifican que los endpoints funcionan correctamente y validan las reglas aplicadas a los datos.
 
-!(src\assets\test_ok.webp)
+![Example Chat](./src/assets/test_ok.png)
 
 ## 📈 Futuras Mejoras
 
