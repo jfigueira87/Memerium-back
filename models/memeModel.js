@@ -4,7 +4,7 @@ import conection_db from "../database/db.js";
 const memeModel = conection_db.define(
     'memes',
     {
-        title:{
+        name:{
             type: DataTypes.STRING,
             allowNull: false,            
         },

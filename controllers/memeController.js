@@ -32,13 +32,13 @@ export const getMeme = async (req, res) => {
 
 export const createMeme = async (req, res) => {
   try {
-    const { title, category, tags, url } = req.body;
+    const { name, category, tags, url } = req.body;
     const lastMeme = await memeModel.findOne({ order: [["id", "DESC"]] });
     const newId = lastMeme ? lastMeme.id + 1 : 1;
 
     const newMeme = await memeModel.create({
       id: newId,
-      title,
+      name,
       category,
       tags,
       url,
@@ -55,9 +55,9 @@ export const createMeme = async (req, res) => {
 export const updateMeme = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, category, tags, url } = req.body;
+    const { name, category, tags, url } = req.body;
     const [updated] = await memeModel.update(
-      { title, category, tags, url },
+      { name, category, tags, url },
       { where: { id } }
     );
 
