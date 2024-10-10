@@ -17,7 +17,7 @@ const startServer = async () => {
     console.log('El modelo está 👍🏻 ');
     
     app.listen(PORT, () => {
-      console.log(`El servidor se ha levantado en el puerto 🖥️ ${PORT}`);
+      console.log(`El servidor se ha levantado 👍 http://localhost:${PORT}/memes 🖥️`);
     });
 
   } catch (error) {
