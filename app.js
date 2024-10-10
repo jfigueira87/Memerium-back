@@ -32,4 +32,4 @@ export const startServer = async () => {
 
 // Llamar a la función para iniciar el servidor
 startServer();
-module.exports = { app, server };
+//module.exports = { app, server };
