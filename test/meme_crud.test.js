@@ -34,7 +34,7 @@ describe("Meme CRUD Tests", () => {
 
         describe('PUT /meme/:id', () => {
             test("Debe actualizar un meme existente", async () => {
-              // Creamos un meme para actualizar
+              // creamos un meme para actualizar
               const meme = await memeModel.create({
                 name: "test",
                 category: "Humor",
