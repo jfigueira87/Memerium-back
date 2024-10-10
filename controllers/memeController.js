@@ -1,23 +1,122 @@
-import memeModel from "../models/memeModel.js";
+import memeModel from '../models/memeModel.js'; // Importa el modelo correctamente
+import { validationResult } from 'express-validator';
 
-export const getMemes = (req, res) => {
-  res.send("Get all memes");
+//=============
+// GET ALL meme
+//=============
+export const getMemes = async (req, res) => {
+  try {
+    const memes = await memeModel.findAll();
+    res.status(200).json(memes);
+  } catch (error) {
+    console.error("Error encontrando memes:", error);
+    res
+      .status(500)
+      .json({ error: "Ha ocurrido un error mientras se encontraba memes." });
+  }
 };
 
-export const getMeme = (req, res) => {
-  res.send("Get one meme");
+//=============
+// GET ONE meme
+//=============
+export const getMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const memes = await memeModel.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!memes) {
+      return res.status(404).json("Meme no encontrado");
+    }
+
+    return res.json(memes); // Esto ya envía el estado 200 por defecto
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
-export const createMeme = (req, res) => {
-  res.send("Create meme");
+//=============
+// CREATE meme
+//=============
+export const createMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { name, category, tags, url } = req.body;
+
+    // Intenta crear el nuevo meme
+    const newMeme = await memeModel.create({
+      name,
+      category,
+      tags,
+      url,
+    });
+
+    res.status(201).json(newMeme);
+  } catch (error) {
+    // Si ocurre un error en la base de datos, asegúrate de devolver un estado 500
+    console.error('Error al crear el meme:', error);
+    res.status(500).json({
+      message: 'Hubo un error al crear el meme',
+      error: error.message,
+    });
+  }
 };
 
-export const updateMeme = (req, res) => {
-  res.send("Update meme");
-};
 
+//=============
+// UPDATE meme
+//=============
+export const updateMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { id } = req.params;
+    const { name, category, tags, url } = req.body;
+    const [updated] = await memeModel.update(
+      { name, category, tags, url },
+      { where: { id } }
+    );
+
+    if (updated) {
+      const updatedMeme = await memeModel.findOne({ where: { id } });
+      res.status(200).json(updatedMeme);
+    } else {
+      res.status(404).json({ message: "Meme no encontrado." });
+    }
+  } catch (error) {
+    console.error("Error actualizando meme:", error);
+    res
+      .status(500)
+      .json({ error: "Error actualizando meme", details: error.message });
+  }
+};
+//=============
 // DELETE meme
+//=============
 export const deleteMeme = async (req, res) => {
+  // Manejar errores de validación
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const { id } = req.params;
     console.log(`Intentando eliminar el meme con ID: ${id}`);
