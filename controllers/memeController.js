@@ -83,7 +83,7 @@ export const deleteMeme = async (req, res) => {
     if (deleted) {
       res.status(200).json({ message: "Meme borrado con exito." });
     } else {
-      res.status(404).json({ message: "Meme not encontrado." });
+      res.status(404).json({ message: "Meme no encontrado." });
     }
   } catch (error) {
     console.error("Error borrando meme:", error);

@@ -2,7 +2,7 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper.js";
 
 export const validateCreate = [
-  check("title", "Este campo es obligatorio")
+  check("name", "Este campo es obligatorio")
   .exists()
   .isString()
   .notEmpty(),
