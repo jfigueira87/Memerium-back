@@ -55,9 +55,12 @@ export const createMeme = async (req, res) => {
 
   try {
     const { name, category, tags, url } = req.body;
+    const lastMeme = await memeModel.findOne({ order: [["id", "DESC"]] });
+    const newId = lastMeme ? lastMeme.id + 1 : 1;
 
     // Intenta crear el nuevo meme
     const newMeme = await memeModel.create({
+      id: newId,
       name,
       category,
       tags,
