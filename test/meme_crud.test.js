@@ -83,7 +83,7 @@ describe("Meme CRUD Tests", () => {
 
                 //esta línea hace a petición delete
                 const response = await request(app).delete(`/meme/${meme_for_delete.id}`);
-                expect(response.status).toBe(204);
+                expect(response.status).toBe(200);
             })
         })
 
