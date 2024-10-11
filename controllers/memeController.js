@@ -129,10 +129,12 @@ export const deleteMeme = async (req, res) => {
     }
 
     await meme.destroy();
-    console.log(`Meme con ID ${id} eliminado con éxito`);
+    
+    res.status(204).json({ message: `Meme con ID ${id} eliminado con éxito` });
     return res.sendStatus(204);
   } catch (error) {
     console.error('Error al eliminar el meme:', error);
     return res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
+
