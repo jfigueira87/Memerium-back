@@ -23,7 +23,7 @@ export const startServer = async () => {
     // Solo iniciar el servidor si no está en modo de test
     if (process.env.NODE_ENV !== 'test') {
       server = app.listen(PORT, () => {
-        console.log(`El servidor se ha levantado en el puerto 🖥️ ${PORT}`);
+        console.log(`El servidor se ha levantado 👍 http://localhost:${PORT}/meme 🖥️`);
       });
     }
   } catch (error) {
